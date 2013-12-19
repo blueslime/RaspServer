@@ -1,0 +1,302 @@
+ #include  "background.h"
+#include <math.h>
+
+int left =0;
+int right = 0;
+
+static int io[12] = {0};
+static int AD_val[8] = {0};
+
+void Move(int forward,int turn)
+{	
+	left = forward + turn;
+	right = forward - turn;
+	if (left > 1023)
+	{
+		left = 1023;
+	}
+	if (left < -1023)
+	{
+		left = -1023;
+	}
+	if (right > 1023)
+	{
+		right = 1023;
+	}
+	if (right < -1023)
+	{
+		right = -1023;
+	}
+	MFSetServoRotaSpd(1,right);
+	MFSetServoRotaSpd(2,right);
+	MFSetServoRotaSpd(3,-left);
+	MFSetServoRotaSpd(4,-left);
+	MFServoAction();
+	//fprintf(stderr,"left = %d,  right = %d \n",left,right);
+}
+
+//登场上台阶
+void Appearance()
+{
+
+}
+
+//找麦克风
+void  FindMic( void )
+{
+	MFCapSetH(180,150);
+    MFCapSetS(255,35);
+	MFCapOpen();
+	DelayMS(2000);
+    int  vx = 0;
+    int  vy = 0;
+    int  sum = 0;
+	int lastx = 160;
+	bool bCapByIO = false;
+    //寻找绿色目标区域
+    while (1)
+    {
+        AD_val[0] = MFGetAD(0);
+		
+		fprintf(stderr,"Ad= %d\n",AD_val[0]);
+
+		for (int i=0;i<5;i++)
+		{
+			io[i] = MFGetDigiInput(i);
+		}
+
+		if (bCapByIO == true)
+		{
+
+			if (AD_val[0] > 300)
+			{
+				break;
+			}
+
+			//io捕捉到柱子了！
+			if (io[0] == 0)
+			{
+				//左侧
+				fprintf(stderr,"红外捕捉模式：左侧\n");
+				Move(0,-230);
+				continue;
+			}
+
+			if (io[4] == 0)
+			{
+				//右侧
+				fprintf(stderr,"红外捕捉模式：右侧\n");
+				Move(0,230);
+				continue;
+			}
+
+			
+
+			if ((io[2] == 0 && io[1] == 0 && io[3] == 0) )
+			{
+				//中间部分
+				fprintf(stderr,"红外捕捉模式：中间 Ad= %d\n",AD_val[0]);
+				Move(100,0);
+			}
+			else
+			{
+				if (io[1] == 0)
+				{	
+					//稍左侧
+					fprintf(stderr,"红外捕捉模式：偏左\n");
+					
+					Move(0,-200);
+					
+				}
+
+				if (io[3] == 0)
+				{
+					//稍右侧
+					fprintf(stderr,"红外捕捉模式：偏右\n");
+					
+					Move(0,200);
+				}
+			}
+			
+
+			DelayMS(20);
+			continue;
+		}
+
+		//获取图像中目标位置
+        vx = MFCapGetCenterX();
+        vy = MFCapGetCenterY();
+        sum = MFCapGetSum();
+	
+        //测试10
+        fprintf(stderr,"视觉找绿色区域 vx:%d vy:%d sum:%d    ",vx,vy,sum);
+        
+        if (sum<500)
+        {
+			fprintf(stderr,"有效像素少 no target \n");
+            if (lastx > 160)
+            {
+				Move(0,-500);
+            } 
+            else
+            {
+				Move(0,500);
+            }
+        }
+        else 
+        {
+			lastx = vx;
+			if (vx>120 && vx<200)
+			{
+				for (int i=0;i<5;i++)
+				{
+					if (io[i] == 0)
+					{
+						bCapByIO = true;
+						fprintf(stderr,"已经对准柱子，进入io捕捉阶段\n");
+						continue;
+					}
+				}
+				
+			}
+			//追逐颜色
+			vx = (vx-160)*3;
+			vy = (vy - 20)*1.5;
+			if (vy < 100)
+			{
+				vy = 150; 
+			}
+			if (vy > 250)
+			{
+				vy = 250;
+			}
+            Move(600,vx);
+			//fprintf(stderr,"move vx=%d vy=%d\n",vx,vy);
+		}
+        DelayMS(100);
+    }
+	Move(0,0);
+	MFCapClose();
+	DelayMS(100);
+}
+
+//寻找顶着绣球的柱子
+void FindBall()
+{
+
+}
+
+//取绣球
+void CatchBall()
+{
+
+}
+
+//找锣
+void  FindGong( void )
+{	
+	MFCapSetH(90,35);
+    MFCapSetS(255,30);
+	
+}
+
+//敲锣
+void HitBoard()
+{
+
+}
+
+//退场动作
+void exit()
+{
+
+}
+
+int main(int argc, char * argv[])
+{
+    int  io9 = 0;
+    int  ad = 0;
+    int  i = 0;
+
+
+	fprintf(stderr,"初始化...\n");
+	//MFCapConnect((char*)&("192.168.0.144"),1100);
+    MFInit();
+	
+    MFSetPortDirect(0x00000F80);	
+	MFADEnable(0);
+	MFADInit(20);
+	
+	MFDigiInit(20);
+
+    MFSetServoMode(1,1);
+    MFSetServoMode(2,1);
+    MFSetServoMode(3,1);
+    MFSetServoMode(4,1);
+    MFSetServoMode(5,0);
+    MFSetServoMode(6,0);
+    MFSetServoMode(7,0);
+    MFSetServoMode(8,0);
+    MFSetServoMode(9,0);
+    MFSetServoMode(10,0);
+    MFSetServoMode(11,0);
+
+
+    while (1)
+    {
+        io9 = 1;
+        
+		//DisplaySendFrame(true);
+        //初始姿态
+		MFSetServoPos(5,475,312);
+		MFSetServoPos(6,208,312);
+		MFSetServoPos(7,691,312);
+		MFSetServoPos(8,525,312);
+		MFSetServoPos(9,839,312);
+		MFSetServoPos(10,347,312);
+		MFSetServoPos(11,535,312);
+		MFSetServoPos(12,491,312);
+		MFServoAction();
+		DelayMS(100);
+		
+        /************!步骤一 上台 ********************/
+		fprintf(stderr,"开始上台阶\n");
+		Appearance();
+
+        /************!步骤二 找麦克风 ********************/
+		fprintf(stderr,"找绿色麦克风区域并对准\n");
+        //找绿色
+        FindMic();
+
+        /************!步骤三 自我介绍 ********************/
+		fprintf(stderr,"已对准绿色麦克风,自我介绍\n");
+		MFMp3Play((char*)&("bark.mp3"),9);
+        DelayMS(1600);
+        //强制关闭
+        MFMp3Play((char*)&(""),0);
+        fprintf(stderr,"自我介绍环节完毕\n");
+
+		/************!步骤四 找绣球立柱 ********************/
+        fprintf(stderr,"找绣球立柱\n");
+		FindBall();
+
+		/************!步骤五 取绣球 ********************/
+        fprintf(stderr,"取绣球\n");	 
+        CatchBall();
+
+		/************!步骤六 找锣 ********************/
+        fprintf(stderr,"找锣\n");
+		FindGong();
+
+		/************!步骤七 敲锣 ********************/
+        fprintf(stderr,"敲锣\n");
+        HitBoard();
+
+		/************!步骤八 退场动作 ********************/
+		fprintf(stderr,"退场动作\n");
+        //MFMp3Play((char*)&("表演结束.mp3"),12);
+        DelayMS(5000);
+        io9 = 1;
+    }
+}
+

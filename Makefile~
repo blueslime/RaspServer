@@ -2,7 +2,7 @@ CXX=g++
 LD=g++
 CFLAGS= -Wall -D_DEBUG -D__LINUX__ -DRS485  -c
 LDFLAGS = -L ./Lib -lpthread -lmsr -lmad
-OBJS=  main.o serial_linux.o capture.o command.o TCPLin.o background.o mp3.o sound.o rs422.o UDPBasic.o VideoTransit.o
+OBJS=  main.o serial_linux.o capture.o struct-dump.o command.o TCPLin.o background.o mp3.o sound.o rs422.o UDPBasic.o VideoTransit.o
 all:multiflex
 multiflex:$(OBJS) 
 	$(LD) $(LDFLAGS) -o multiflex $(OBJS)

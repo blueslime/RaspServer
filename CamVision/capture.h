@@ -21,8 +21,8 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 
-#include "fb.h"
-#include <linux/videodev.h>
+//#include "fb.h"
+//#include <linux/videodev.h>
 
 #include "../TCP/TCPLin.h"
 #include "../UDP/VideoTransit.h"
@@ -30,7 +30,7 @@
 #include "../SerialCom/serial.h"
 
 //#define _GNU_SOURCE
-#include <getopt.h>
+//#include <getopt.h>
 
 struct capture_info{
 	int width, height;

@@ -101,7 +101,7 @@ void convert(int r,int g,int b)
 
 void fb_draw16bpp(struct fb_dev *fbdev, void* src, int x, int y, int width, int height)
 {
-	int i, j;
+	/*int i, j;
 	int fb_line_len = fbdev->fb_line_len;
 	__u8 *psrc= (__u8*)src;
 	__u16* pdsc = (__u16*)fbdev->fb_mem;
@@ -113,27 +113,7 @@ void fb_draw16bpp(struct fb_dev *fbdev, void* src, int x, int y, int width, int 
 
 	for(i=0; i<height; i++)
 	{
-		/*/////////////////////////////////////////////////////////////////////////
-		//将标记的像素点显示为红色
-		for(j=0;j<width;j++)
-		{
-			b = (*psrc);psrc++;
-			g = (*psrc);psrc++;
-			r = (*psrc);psrc++;
-			if(map[i*320+j] == 1)
-			{
-				pdsc[j] =  0xf800;
-			}
-			else
-			{
-			tmp = r>>3;		tmp<<=11;
-			tmp1 = g>>2;	tmp|=(tmp1<<5);
-			tmp |= b>>3;
-			pdsc[j] =  tmp;
-			}
-		}
 		
-		/////////////////////////////////////////////////////////////////////////*/
 		//直接显示
 		for(j=0;j<width;j++)
 		{
@@ -150,11 +130,12 @@ void fb_draw16bpp(struct fb_dev *fbdev, void* src, int x, int y, int width, int 
 
 		pdsc+=fb_line_len/2;
 	}
+*/
 }
 
 void fb_draw12bpp(struct fb_dev *fbdev, void* src, int x, int y, int width, int height)
 {
-	int i, j;
+	/*int i, j;
 	int fb_line_len = fbdev->fb_line_len;
 	__u8 *psrc= (__u8*)src;
 	__u8* pdsc = (__u8*)fbdev->fb_mem;
@@ -180,12 +161,12 @@ void fb_draw12bpp(struct fb_dev *fbdev, void* src, int x, int y, int width, int 
 			psrc+=6;
 		}
 		pdsc+=fb_line_len;
-	}
+	}*/
 }
 
 int framebuffer_open(void)
 {
-	int fb;
+	/*int fb;
 	struct fb_var_screeninfo fb_vinfo;
 	struct fb_fix_screeninfo fb_finfo;
 	
@@ -246,11 +227,12 @@ int framebuffer_open(void)
 	memset (fbdev.fb_mem, 0x0, fbdev.fb_size);
 
 	return 0;
+*/
 }
 
 void framebuffer_close()
 {
-	if(fbdev.fb_mem){
+	/*if(fbdev.fb_mem){
 		munmap(fbdev.fb_mem, fbdev.fb_size);
 		fbdev.fb_mem=NULL;
 	}
@@ -259,6 +241,7 @@ void framebuffer_close()
 		close(fbdev.fb);
 		fbdev.fb=0;
 	}
+*/
 }
 
 //class
@@ -293,17 +276,17 @@ CCapture::CCapture()
 
 CCapture::~CCapture()
 {
-	Stop();
+	/*Stop();
 	sleep(100);
 	if (pidCapThread)
 		pthread_join(pidCapThread, NULL);
 
-	delete[] m_pVbuf;
+	delete[] m_pVbuf;*/
 }
 
 int CCapture::spread(int x,int y)
 {
-	if (x<0 || x >= m_nWidth || y<0 || y>= m_nHeight)
+	/*if (x<0 || x >= m_nWidth || y<0 || y>= m_nHeight)
 	{
 		return 0;
 	}
@@ -345,6 +328,7 @@ int CCapture::spread(int x,int y)
 		}
 	}
 	return 1;
+*/
 }
 int CCapture::ConvertPix(int x,int y)
 {
@@ -423,7 +407,7 @@ int CCapture::ConvertPix(int x,int y)
 void *CCapture::Capting(void *pParam)
 {
 	//主体对象指针
-	CCapture *pCapture = (CCapture*) pParam;
+	/*CCapture *pCapture = (CCapture*) pParam;
 
 	//线程终止标志
 	pCapture->m_exit = false;
@@ -497,15 +481,7 @@ void *CCapture::Capting(void *pParam)
 				//扩散扫描，运算量小
 				pCapture->spread(pCapture->m_lastx,pCapture->m_lasty);
 				//////////////////////////////////////////////////////////////////////////
-				/*/完全扫描
-				for (int i=0;i<fmt.width;i++)
-				{
-					for (int j=0;j<fmt.height;j++)
-					{
-						pCapture->ConvertPix(i,j);
-					}
-				}
-				/////////////////////////////////////////////////////////////////////////*/
+				
 				
 				//cal the x and y
 				if (p_sum > 0)
@@ -535,7 +511,7 @@ void *CCapture::Capting(void *pParam)
 			
 			/////////////////////////////////////////////////////////////////
 			//视频图像显示
-			//fbdev.fb_draw(&fbdev, pCapture->m_pVbuf/*pvideo_buf->data*/, x, y, width, height);
+			//fbdev.fb_draw(&fbdev, pCapture->m_pVbuf, x, y, width, height);
 			//printf("fb_drawed \n");
 			//ng_release_video_buf(pvideo_buf);
 
@@ -585,12 +561,12 @@ void *CCapture::Capting(void *pParam)
 	//framebuffer_close();
 	cap_driver->stopvideo(caphandle);
 	cap_driver->close(caphandle);
-	return 0;
+	return 0;*/
 } 
 
 void CCapture::Create()
 {
-	if (m_exit == false)
+	/*if (m_exit == false)
 	{
 		return;
 	}
@@ -626,7 +602,7 @@ void CCapture::Create()
 		return;
 	}
 
-	pthread_create(&pidCapThread, NULL, Capting, (void *)this);
+	pthread_create(&pidCapThread, NULL, Capting, (void *)this);*/
 }
 
 void CCapture::Stop()

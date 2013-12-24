@@ -24,8 +24,8 @@
 #include "fb.h"
 #include <linux/videodev.h>
 
-#include "../tcp/TCPLin.h"
-#include "../udp/VideoTransit.h"
+#include "../TCP/TCPLin.h"
+#include "../UDP/VideoTransit.h"
 #include "../type.h"
 #include "../SerialCom/serial.h"
 

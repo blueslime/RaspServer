@@ -1,5 +1,5 @@
-CC=arm-linux-gcc
-CXX=arm-linux-g++
+CC=gcc
+CXX=g++
 CFLAGS = -c -g -D_DEBUG -D__LINUX__ -I ../
 LDFLAGS = -lmsr -lpthread 
 #-lxml2 -lmad -lpthread -lmsr

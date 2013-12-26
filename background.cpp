@@ -3,11 +3,11 @@
 
 #include "CamVision/capture.h"
 #include "Command/command.h"
-#include "SR/speechrecogn.h"
+//#include "SR/speechrecogn.h"
 #include "TCP/TCPLin.h"
-#include "Mp3_Play/mp3_play.h"
+//#include "Mp3_Play/mp3_play.h"
 #include "Dev/sound.h"
-#include "RS422/MFRS422.h"
+//#include "RS422/MFRS422.h"
 #include "UDP/UDPBasic.h"
 #include "UDP/VideoTransit.h"
 #include <signal.h>
@@ -20,9 +20,9 @@ static CCapture MF_Cap;
 
 static CMFCmd MF_Cmd;
 
-static SpeechRecognition MF_SR;
+//static SpeechRecognition MF_SR;
 
-static CMFRS422 MF_RS422;
+//static CMFRS422 MF_RS422;
 
 static CUDPBasic MF_Udp;
 
@@ -41,7 +41,7 @@ void MFInit()
 	fprintf(stderr,"[MFInit] Begin...\n");
 	MF_Cmd.Create(2,B115200);				//与单片机通讯
 
-	MF_RS422.Create(1,B115200);				//rs422
+//	MF_RS422.Create(1,B115200);				//rs422
 
 	MF_Report.Listen(1000);			//打开网络后台监听	
 	MF_Cap.pReport = &MF_Report;
@@ -53,7 +53,7 @@ void MFInit()
 // 	MF_Cmd.ScheUpdateAD(100);
 // 	MF_Cmd.ScheUpdateInput(100);
 // 	MF_Cmd.ScheUpdateServoPos(100);
-	MF_RS422.ScheUpdateUSonic(200);
+//	MF_RS422.ScheUpdateUSonic(200);
 
 //	MF_Cmd.ScheUpdateAll(200);
 	MFADInit(100);
@@ -67,21 +67,21 @@ void MFInit()
 //LCD
 void MF2X4LCD(const char*item,int insize)
 {
-	MF_RS422.Printf2X4LCD(item,insize);
+//	MF_RS422.Printf2X4LCD(item,insize);
 }
 
 //////////////////////////////////////////////////////////////////////////
 //USonic
 void MFUSonicEnable()
 {
-	MF_RS422.USonicEnable();
-	MF_RS422.ScheUpdateUSonic(100);
+//	MF_RS422.USonicEnable();
+//	MF_RS422.ScheUpdateUSonic(100);
 }
 
 int MFGetUltrasonic()
 {	
 //	fprintf(stderr,"cmd.maxcnt = %d  422.maxcnet = %d!\n",MF_Cmd.maxcnt,MF_RS422.maxcnt);
-	return MF_RS422.Get53USonic();
+//	return MF_RS422.Get53USonic();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -300,63 +300,75 @@ void MFCapConnect(char* inTarIP,int inPort)
 
 void MFSRStart()
 {
+/*
 	usleep(200000);
 	fprintf(stderr,"MFSRStart!!!!!\n");
 	MF_SR.start();
 	usleep(1000000);
+*/
 }
 
 void MFSRStop()
 {
+/*
 	MF_SR.stop();
 	usleep(1000000);
+*/
 }
 
 bool MFSRPause()
 {
+/*
 	bool ret = MF_SR.Pause();
 	usleep(200000);
 	return ret;
+*/
 }
 
 bool MFSRContinue()
 {
+/*
 	usleep(100000);
 	bool ret = MF_SR.Continue();
 	usleep(100000);
 	return ret;
+*/
 }
 
 bool MFSRInsertText(int index,const char*item,int insize)
 {
+/*
 	MF_SR.insertItem(index,item,insize);
-	return true;
+*/	return true;
+
 }
 
 int MFSRGetResIndex()
 {
+
 	int res = -1;
-	if(isMP3Playing() == 0)
+	/*if(isMP3Playing() == 0)
 	{
 		res = MF_SR.GetResultIndex();
-	}
-	//MF_SR.ResetResIndex();
+	}*/
 	return res;
 }
 
 void MFSRClearItems()
 {
-	MF_SR.clear();
+//	MF_SR.clear();
 }
 
 bool MFSRisStarted()
 {
-	return MF_SR.isStarted();
+//	return MF_SR.isStarted();
+return true;
 }
 
 //////////////////////////////////////////////////////////////////////////
 void MFMp3Play(const char*item,int insize)
 {
+/*
 	MFSRPause();
 	if (strcmp(mp3_file,item) == 0)
 	{
@@ -384,10 +396,12 @@ void MFMp3Play(const char*item,int insize)
 		//play
 		play(mp3_file);
 	}
+*/
 }
 
 void MFMp3Stop()
 {
+/*
 	//MFCloseSound();
 	stop_play(100000);
 
@@ -396,6 +410,7 @@ void MFMp3Stop()
 	{
 		bool MFSRContinue();
 	}
+*/
 }
 //////////////////////////////////////////////////////////////////////////
 //UDP
@@ -459,8 +474,8 @@ bool ComCreat(int inNo,unsigned int inBaudrate)
 	switch(inNo)
 	{
 	case 1:
-		MF_RS422.Close();
-		ret = MF_RS422.Create(1,inBaudrate);
+		//MF_RS422.Close();
+		//ret = MF_RS422.Create(1,inBaudrate);
 		break;
 
 	case 2:

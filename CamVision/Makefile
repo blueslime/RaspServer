@@ -1,6 +1,6 @@
 CC=gcc
 CXX=g++
-CFLAGS = -c -g -D_DEBUG -D__LINUX__ -I ../
+CFLAGS = -c -g -D_DEBUG -D__LINUX__ -lpthread -I ../
 LDFLAGS = -lmsr -lpthread 
 #-lxml2 -lmad -lpthread -lmsr
 #EXTRA_LIBS += -lpthread

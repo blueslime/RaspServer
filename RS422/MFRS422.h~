@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "..\SerialCom\serial.h"
+#include "..\SERIALCOM\serial.h"
 
 #define  MF422BUFLEN 64
 

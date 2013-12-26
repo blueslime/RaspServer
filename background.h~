@@ -11,7 +11,7 @@
 #ifdef WIN32
 #include "StdAfx.h"
 #endif
-#include <pthread.h>
+#include<pthread.h>
 #include <stdio.h>
 //#include "protocol.h"
 

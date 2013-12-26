@@ -1,8 +1,8 @@
 CXX=g++
 LD=g++
-CFLAGS= -Wall -D_DEBUG -D__LINUX__ -DRS485  -c
-LDFLAGS = -L ./Lib -lpthread -lmsr -lmad
-OBJS=  main.o serial_linux.o capture.o command.o TCPLin.o background.o mp3.o sound.o rs422.o UDPBasic.o VideoTransit.o
+CFLAGS= -lpthread -Wall -D_DEBUG -D__LINUX__ -DRS485 -lm -c 
+LDFLAGS = -L ./Lib -lpthread
+OBJS=  main.o serial_linux.o capture.o command.o TCPLin.o background.o sound.o UDPBasic.o VideoTransit.o
 all:multiflex
 multiflex:$(OBJS) 
 	$(LD) $(LDFLAGS) -o multiflex $(OBJS)
@@ -10,20 +10,18 @@ main.o: main.cpp type.h debuglevel.h background.h debuglevel.h
 	$(CXX) $(CFLAGS) -o main.o main.cpp
 background.o: background.h background.cpp debuglevel.h
 	$(CXX) $(CFLAGS) -o background.o background.cpp
-rs422.o: RS422/MFRS422.h RS422/MFRS422.cpp serial_linux.o debuglevel.h
-	$(CXX) $(CFLAGS) -o rs422.o RS422/MFRS422.cpp
 command.o: Command/command.h Command/command.cpp serial_linux.o debuglevel.h
 	$(CXX) $(CFLAGS) -o command.o Command/command.cpp
 serial_linux.o: SerialCom/serial_linux.cpp SerialCom/serial.h type.h debuglevel.h
-	$(CXX) $(CFLAGS) -o serial_linux.o SerialCom/serial_linux.cpp
+	$(CXX) $(CFLAGS) -o serial_linux.o SerialCom/serial_linux.cpp 
 TCPLin.o:TCP/TCPLin.h TCP/TCPLin.cpp type.h debuglevel.h TCP/st_MF270.h
 	$(CXX) $(CFLAGS) -o TCPLin.o TCP/TCPLin.cpp
 UDPBasic.o:UDP/UDPBasic.h UDP/UDPBasic.cpp type.h debuglevel.h TCP/st_MF270.h
 	$(CXX) $(CFLAGS) -o UDPBasic.o UDP/UDPBasic.cpp
 capture.o: CamVision/Makefile CamVision/*.h CamVision/*.c CamVision/*.cpp debuglevel.h
 	make -C CamVision/
-mp3.o: Mp3_Play/*.h Mp3_Play/*.c sound.o debuglevel.h
-	$(CXX) $(CFLAGS) -o mp3.o Mp3_Play/mp3_play.c
+#mp3.o: Mp3_Play/*.h Mp3_Play/*.c sound.o debuglevel.h
+#	$(CXX) $(CFLAGS) -o mp3.o Mp3_Play/mp3_play.c
 sound.o: Dev/sound.h Dev/sound.c  debuglevel.h
 	$(CXX) $(CFLAGS) -o sound.o Dev/sound.c
 VideoTransit.o:UDP/VideoTransit.h UDP/VideoTransit.cpp type.h debuglevel.h TCP/st_MF270.h

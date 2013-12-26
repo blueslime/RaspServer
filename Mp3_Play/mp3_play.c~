@@ -49,6 +49,7 @@
 #endif
 
 static pthread_mutex_t       play_lock;
+//static pthread_mutex_t       play_mutex;
 static pthread_t             th_player;
 
 static int stop_cmd=0;

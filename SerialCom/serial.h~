@@ -18,7 +18,6 @@
 #include <stdio.h>
 #include "../type.h"
 #include "CQueue.h"
-#include <pthread.h>
 
 struct CMDBUF 
 {
